@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -12,6 +12,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useToast } from "@/hooks/use-toast";
 
 interface TimetableUploadProps {
   onComplete: () => void;
@@ -30,6 +31,7 @@ const dummyTimeTableData = [
 ];
 
 const TimetableUpload = ({ onComplete }: TimetableUploadProps) => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
   const [filePreview, setFilePreview] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -37,6 +39,7 @@ const TimetableUpload = ({ onComplete }: TimetableUploadProps) => {
   const [extractedClasses, setExtractedClasses] = useState<typeof dummyTimeTableData | null>(null);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [selectedClasses, setSelectedClasses] = useState<{[key: string]: boolean}>({});
+  const { toast } = useToast();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -52,12 +55,65 @@ const TimetableUpload = ({ onComplete }: TimetableUploadProps) => {
         reader.readAsDataURL(selectedFile);
       } else {
         setFilePreview(null);
+        // For PDF files, we can't show a preview but we can acknowledge it was uploaded
+        if (selectedFile.type === 'application/pdf') {
+          toast({
+            title: "PDF Received",
+            description: `File "${selectedFile.name}" is ready to be analyzed`,
+          });
+        }
+      }
+    }
+  };
+
+  const openFileSelector = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      const droppedFile = e.dataTransfer.files[0];
+      setFile(droppedFile);
+      
+      // Create preview for dropped images
+      if (droppedFile.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          setFilePreview(e.target?.result as string);
+        };
+        reader.readAsDataURL(droppedFile);
+      } else {
+        setFilePreview(null);
+        // For PDF files
+        if (droppedFile.type === 'application/pdf') {
+          toast({
+            title: "PDF Received",
+            description: `File "${droppedFile.name}" is ready to be analyzed`,
+          });
+        }
       }
     }
   };
 
   const handleUpload = () => {
-    if (!file) return;
+    if (!file) {
+      toast({
+        title: "No file selected",
+        description: "Please select a file to upload",
+        variant: "destructive",
+      });
+      return;
+    }
     
     setIsUploading(true);
     
@@ -92,14 +148,31 @@ const TimetableUpload = ({ onComplete }: TimetableUploadProps) => {
 
   const handleConfirm = () => {
     setShowConfirmDialog(false);
+    toast({
+      title: "Timetable confirmed",
+      description: "Your class schedule has been saved successfully",
+    });
     // In a real app, we'd save the selected classes to state or context
     onComplete();
+  };
+
+  const resetFileSelection = () => {
+    setFile(null);
+    setFilePreview(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   };
 
   return (
     <div className="space-y-4">
       {!(filePreview || isUploading || isAnalyzing || extractedClasses) && (
-        <div className="border-2 border-dashed rounded-lg p-6 text-center">
+        <div 
+          className="border-2 border-dashed rounded-lg p-6 text-center cursor-pointer hover:border-study-primary/60 transition-colors"
+          onClick={openFileSelector}
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}
+        >
           <Upload className="h-10 w-10 text-muted-foreground mx-auto mb-2" />
           <p className="mb-2 font-medium">Drag and drop or click to upload</p>
           <p className="text-sm text-muted-foreground mb-4">
@@ -107,13 +180,17 @@ const TimetableUpload = ({ onComplete }: TimetableUploadProps) => {
           </p>
           <input
             type="file"
+            ref={fileInputRef}
             id="timetable-upload"
             accept=".pdf,image/*"
             className="hidden"
             onChange={handleFileChange}
           />
           <Button 
-            onClick={() => document.getElementById('timetable-upload')?.click()}
+            onClick={(e) => {
+              e.stopPropagation();
+              openFileSelector();
+            }}
             variant="outline"
             className="mx-auto"
           >
@@ -134,10 +211,44 @@ const TimetableUpload = ({ onComplete }: TimetableUploadProps) => {
               variant="outline" 
               size="sm" 
               className="absolute top-2 right-2"
-              onClick={() => {
-                setFile(null);
-                setFilePreview(null);
-              }}
+              onClick={resetFileSelection}
+            >
+              Replace
+            </Button>
+          </div>
+          <div className="flex items-center justify-between">
+            <p className="text-sm">
+              {file?.name} ({(file?.size / 1024).toFixed(1)} KB)
+            </p>
+            <Button 
+              onClick={handleUpload} 
+              className="btn-gradient"
+            >
+              Upload & Analyze
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {file && !filePreview && !isUploading && !isAnalyzing && !extractedClasses && (
+        <div className="space-y-4">
+          <div className="relative border rounded-lg p-4">
+            <div className="flex items-center">
+              <div className="bg-study-soft rounded-full p-3 mr-3">
+                <Upload className="h-5 w-5 text-study-primary" />
+              </div>
+              <div>
+                <p className="font-medium">{file.name}</p>
+                <p className="text-sm text-muted-foreground">
+                  {file.type} • {(file.size / 1024).toFixed(1)} KB
+                </p>
+              </div>
+            </div>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="absolute top-2 right-2"
+              onClick={resetFileSelection}
             >
               Replace
             </Button>
