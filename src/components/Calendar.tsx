@@ -182,13 +182,22 @@ const Calendar = () => {
             month={date}
             onMonthChange={setDate}
             className="mx-auto"
+            modifiers={{
+              hasEvent: eventsData.map(event => event.date)
+            }}
+            modifiersClassNames={{
+              hasEvent: "relative"
+            }}
             components={{
-              Day: ({ day, ...props }) => (
-                <div className={getDayClass(day)}>
-                  <CalendarComponent.Day day={day} {...props} />
-                  {renderEventDot(day)}
-                </div>
-              ),
+              DayContent: (props) => {
+                const dayDate = props.date;
+                return (
+                  <div className={getDayClass(dayDate)}>
+                    <div>{props.date.getDate()}</div>
+                    {renderEventDot(dayDate)}
+                  </div>
+                );
+              }
             }}
           />
         </CardContent>
