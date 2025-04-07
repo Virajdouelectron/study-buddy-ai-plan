@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Upload } from "lucide-react";
+import { Upload, Brain } from "lucide-react";
 
 interface ProcessingStateProps {
   isUploading: boolean;
@@ -23,10 +23,15 @@ const ProcessingState = ({ isUploading, isAnalyzing }: ProcessingStateProps) => 
         ) : isAnalyzing ? (
           <>
             <div className="inline-block rounded-full p-3 bg-study-soft mb-4">
-              <div className="h-6 w-6 rounded-full border-4 border-study-primary border-t-transparent animate-spin"></div>
+              <Brain className="h-6 w-6 text-study-primary animate-pulse" />
+              <div className="h-1 w-full bg-study-soft mt-3 rounded-full overflow-hidden">
+                <div className="h-full bg-study-primary animate-[progress_2s_ease-in-out_infinite]" style={{width: '50%'}}></div>
+              </div>
             </div>
-            <h3 className="font-medium">Our AI is analyzing your timetable...</h3>
-            <p className="text-sm text-muted-foreground mt-1">Extracting subjects, timings, and electives</p>
+            <h3 className="font-medium">Enhanced AI is analyzing your timetable...</h3>
+            <p className="text-sm text-muted-foreground mt-1">
+              Extracting subjects, rooms, timings, and identifying electives with improved accuracy
+            </p>
           </>
         ) : null}
       </CardContent>

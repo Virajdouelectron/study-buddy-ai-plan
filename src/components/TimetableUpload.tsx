@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import UploadDropzone from "./timetable/UploadDropzone";
@@ -25,7 +24,6 @@ const TimetableUpload = ({ onComplete }: TimetableUploadProps) => {
   const handleFileChange = (selectedFile: File) => {
     setFile(selectedFile);
     
-    // Create a preview for image files
     if (selectedFile.type.startsWith('image/')) {
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -34,7 +32,6 @@ const TimetableUpload = ({ onComplete }: TimetableUploadProps) => {
       reader.readAsDataURL(selectedFile);
     } else {
       setFilePreview(null);
-      // For PDF files, we can't show a preview but we can acknowledge it was uploaded
       if (selectedFile.type === 'application/pdf') {
         toast({
           title: "PDF Received",
@@ -61,16 +58,13 @@ const TimetableUpload = ({ onComplete }: TimetableUploadProps) => {
     
     setIsUploading(true);
     
-    // Simulate upload and AI processing
     setTimeout(() => {
       setIsUploading(false);
       setIsAnalyzing(true);
       
-      // Simulate AI analysis delay
       setTimeout(() => {
         setIsAnalyzing(false);
         
-        // Initialize selectedClasses with all true
         const initialSelectedClasses: {[key: string]: boolean} = {};
         dummyTimeTableData.forEach(item => {
           initialSelectedClasses[item.id] = true;
@@ -79,7 +73,12 @@ const TimetableUpload = ({ onComplete }: TimetableUploadProps) => {
         setSelectedClasses(initialSelectedClasses);
         setExtractedClasses(dummyTimeTableData);
         setShowConfirmDialog(true);
-      }, 1500);
+        
+        toast({
+          title: "Timetable analyzed",
+          description: `Successfully extracted ${dummyTimeTableData.length} classes from your timetable.`,
+        });
+      }, 2000);
     }, 1000);
   };
 
@@ -96,11 +95,9 @@ const TimetableUpload = ({ onComplete }: TimetableUploadProps) => {
       title: "Timetable confirmed",
       description: "Your class schedule has been saved successfully",
     });
-    // In a real app, we'd save the selected classes to state or context
     onComplete();
   };
 
-  // Determine what to show at the current state
   const showUploadDropzone = !file && !isUploading && !isAnalyzing && !extractedClasses;
   const showFilePreview = file && !isUploading && !isAnalyzing && !extractedClasses;
   const showProcessingState = isUploading || isAnalyzing;
