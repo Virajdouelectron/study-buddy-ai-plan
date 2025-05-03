@@ -1,73 +1,80 @@
-# Welcome to your Lovable project
-
 ## Project info
 
 **URL**: https://lovable.dev/projects/96c584f6-8d3f-4b8e-9d93-070415a36b00
 
-## How can I edit this code?
+# 🎓 **AI-Powered Attendance Management App**
 
-There are several ways of editing your application.
+## 🌟 **Overview**
+Welcome to the **AI-Powered Attendance Management App**, your smart assistant for optimizing class attendance, study schedules, and life balance. Our app leverages cutting-edge **AI** to help students efficiently manage their timetables, improve attendance, and achieve academic goals without the hassle. With an easy-to-use interface and personalized scheduling, this app is designed to keep you on track and motivated.
 
-**Use Lovable**
+---
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/96c584f6-8d3f-4b8e-9d93-070415a36b00) and start prompting.
+## 📑 **Features**
+### 1. **Timetable Input & User Authentication**
+   - **Auto-generate Username**: No login required! Just pick or let us generate a username for you.
+   - **Upload Your Timetable**: Upload your college timetable (PDF or image format) and confirm your class schedule, including electives and breaks.
 
-Changes made via Lovable will be committed automatically to this repo.
+### 2. **AI-Powered Schedule Optimization**
+   - **Personalized Study Plan**: Based on your class schedule, current attendance, and personal preferences, the AI creates a tailored study plan.
+   - **Class Attendance Strategies**: The app provides targeted suggestions to ensure you meet your attendance goals.
+   - **Smart Time Allocation**: The app balances study sessions with extracurricular activities and breaks to ensure overall well-being.
 
-**Use your preferred IDE**
+### 3. **Interactive Dashboard**
+   - **Calendar View**: Stay organized with a simple, user-friendly calendar view to track your study sessions, classes, and activities.
+   - **To-Do List**: Easily manage your daily tasks, class schedules, and study sessions.
+   - **Motivating Reminders**: Get timely reminders about upcoming classes, study sessions, and attendance milestones to keep you on track.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+---
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## 🎨 **Design Guidelines**
+### **Color Scheme**
+   - Clean and neutral tones to ensure readability and a calming experience.
+   - Accent colors for important actions and notifications to keep focus and alert the user.
 
-Follow these steps:
+### **Layout**
+   - A clean, minimalistic layout prioritizing usability and intuitive navigation.
+   - Essential information is always visible, with non-intrusive elements to ensure a smooth experience.
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### **Typography**
+   - Easy-to-read fonts optimized for on-screen readability.
+   - Headings, subheadings, and body text are clear and structured for optimal scanning.
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### **Iconography**
+   - Simple and consistent icons representing different app features, actions, and categories (e.g., calendar, study sessions, notifications).
+   - Icons are intuitive, meaning users can easily recognize their purpose.
 
-# Step 3: Install the necessary dependencies.
-npm i
+### **Animation**
+   - Smooth and subtle transitions for a dynamic feel without distracting the user.
+   - Animations help highlight key events (e.g., schedule changes or reminders) but are used sparingly to maintain focus on functionality.
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+---
 
-**Edit a file directly in GitHub**
+## 🛠 **Technologies Used**
+- **Frontend**:  
+  - **Qt**: For the sleek and responsive desktop UI.  
+  - **HTML/CSS/JavaScript**: For web interface development (if applicable).
+  
+- **Backend**:  
+  - **C++**: For core attendance management logic.  
+  - **Python**: For AI-based schedule optimization.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+- **AI & ML**:  
+  - **Scikit-learn** or **TensorFlow** (if using more advanced machine learning models).
+  
+- **Database**:  
+  - **SQLite** or **Firebase** for user data storage and attendance tracking.
 
-**Use GitHub Codespaces**
+- **Deployment**:  
+  - **Docker**: For containerized development and deployment.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+---
 
-## What technologies are used for this project?
+## ⚙️ **Installation Guide**
 
-This project is built with:
+### 1. **Clone the Repository**
+```bash
+git clone https://github.com/yourusername/ai-attendance-management-app.git
+cd ai-attendance-management-app
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
 
-## How can I deploy this project?
 
-Simply open [Lovable](https://lovable.dev/projects/96c584f6-8d3f-4b8e-9d93-070415a36b00) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes it is!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
