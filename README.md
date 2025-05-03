@@ -1,6 +1,6 @@
 ## Project info
 
-**URL**: https://lovable.dev/projects/96c584f6-8d3f-4b8e-9d93-070415a36b00
+**URL**: https://study-buddy-ai-plan.lovable.app/
 
 # 🎓 **AI-Powered Attendance Management App**
 
